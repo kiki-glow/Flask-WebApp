@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+virtualenv/
+ENV/
+env/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Flask specific
+instance/
+*.sqlite3
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Coverage and test results
+htmlcov/
+*.cover
+*.coverage
+*.coverage.*
+.cache
+
+# Pytest
+.cache/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# MacOS specific files
+.DS_Store
+
+# Windows specific files
+Desktop.ini
+
+# Node modules (if using npm)
+node_modules/

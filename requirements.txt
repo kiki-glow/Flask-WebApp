@@ -1,0 +1,4 @@
+Flask==2.3.2
+pymongo==4.7.0
+Flask-Mail==0.9.1
+Werkzeug # For password hashing

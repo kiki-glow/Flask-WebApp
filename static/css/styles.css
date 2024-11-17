@@ -1,0 +1,218 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+}
+
+/* Navigation Menu */
+.navbar {
+    width: 100%;
+    background: linear-gradient(to right, #08566e, #79c2b1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #ffffff;
+    color: #08566e;
+    text-decoration: none;
+}
+
+/* Page Layout */
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    margin-bottom: 20px;
+    color: #08566e;
+}
+
+p {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Forms */
+form {
+    background-color: #f0f8ff;
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #08566e;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 5px;
+    border: none;
+    background-color: #28a745;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+a {
+    color: #08566e;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 15px;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Cards */
+.contact-card {
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px); /* Lift slightly on hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.contact-card h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #08566e;
+}
+
+.contact-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+.contact-card a {
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.contact-card a:hover {
+    color: #0056b3;
+}
+
+/* Footer */
+footer {
+    background-color: #08566e;
+    color: #c9e4ec;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .navbar .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    form {
+        width: 90%;
+    }
+
+    .contact-card {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 10px;
+    }
+
+    footer p {
+        font-size: 12px;
+    }
+}
