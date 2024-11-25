@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_mail import Mail, Message
+from flask_socketio import SocketIO, emit
 from pymongo import MongoClient
 import bcrypt
 import os
@@ -17,6 +18,7 @@ client = MongoClient("mongodb://localhost:27017/")
 db = client.flask_db
 users_collection = db.users
 contacts_collection = db.contacts
+messages_collection = db.messages  # New collection for chat messages
 
 # Flask-Mail setup
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -26,6 +28,9 @@ app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
+
+# SocketIO setup
+socketio = SocketIO(app)
 
 # Routes
 @app.route('/', methods=['GET', 'POST'])
@@ -53,6 +58,7 @@ def register():
 
     return render_template('register.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -68,6 +74,7 @@ def login():
             flash('Invalid username or password', 'danger')
 
     return render_template('login.html')
+
 
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
@@ -87,14 +94,13 @@ def forgot_password():
 
     return render_template('forgot_password.html')
 
+
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     if request.method == 'POST':
         new_password = request.form['password'].encode('utf-8')
         hashed_password = bcrypt.hashpw(new_password, bcrypt.gensalt())
         # Update user's password
-        # Assuming token validation logic is implemented
-        # users_collection.update_one({'token': token}, {'$set': {'password': hashed_password}})
         flash('Password updated successfully', 'success')
         return redirect(url_for('login'))
 
@@ -139,11 +145,6 @@ def search_contact():
     else:
         return redirect(url_for('login'))
 
-@app.route('/logout')
-def logout():
-    session.pop('user', None)
-    return redirect(url_for('login'))
-
 @app.route('/index')
 def index():
     if 'user' in session:
@@ -151,5 +152,37 @@ def index():
     else:
         return redirect(url_for('login'))
 
+
+# WebSocket Event Handlers
+@socketio.on('message')
+def handle_message(msg):
+    """Handle incoming messages from clients."""
+    print(f"Received message: {msg}")
+    # Save the message to MongoDB
+    messages_collection.insert_one({"message": msg, "user": session.get('user', 'Anonymous')})
+    # Broadcast the message to all connected clients
+    emit('response', {'user': session.get('user', 'Anonymous'), 'message': msg}, broadcast=True)
+
+
+@socketio.on('connect')
+def handle_connect():
+    """Handle client connection."""
+    print("Client connected")
+    emit('response', {'user': 'Server', 'message': 'A new user has connected!'}, broadcast=True)
+
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    """Handle client disconnection."""
+    print("Client disconnected")
+
+
+# Logout
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('login'))
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, debug=True)

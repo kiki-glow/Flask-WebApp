@@ -20,18 +20,66 @@
 
     <div class="container">
         <h2 class="text-center my-4">Welcome, {{ session['user'] }}!</h2>
-        <div class="text-center">
+        
+        <!-- Chat Section -->
+        <div class="chat-container">
+            <div id="chat-box" class="chat-box mb-3" style="border: 1px solid #ddd; padding: 10px; height: 300px; overflow-y: scroll;">
+                <!-- Messages will be displayed here -->
+            </div>
+            <div class="input-group">
+                <input type="text" id="message" class="form-control" placeholder="Type a message">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" id="send-btn">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center my-4">
             <a href="/add_contact" class="btn btn-success btn-lg m-2">Add a Contact</a>
             <a href="/search_contact" class="btn btn-info btn-lg m-2">Search for a Contact</a>
             <a href="/logout" class="btn btn-danger btn-lg m-2">Logout</a>
         </div>
     </div>
+
     <!-- Footer -->
     <footer>
         <div class="footer-container">
             <p>&copy; 2024 Glow Techs. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- WebSocket connection -->
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        // Initialize WebSocket connection
+        const socket = io.connect();
+
+        // Listen for messages from the server
+        socket.on('response', (data) => {
+            const chatBox = document.getElementById('chat-box');
+            const message = document.createElement('p');
+            message.textContent = `${data.user}: ${data.message}`;
+            chatBox.appendChild(message);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat
+        });
+
+        // Send a message to the server
+        document.getElementById('send-btn').addEventListener('click', () => {
+            const message = document.getElementById('message').value;
+            if (message.trim() !== "") {
+                socket.emit('message', message);
+                document.getElementById('message').value = ''; // Clear the input field
+            }
+        });
+
+        // Allow pressing Enter to send a message
+        document.getElementById('message').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('send-btn').click();
+            }
+        });
+    </script>
+
     <!-------------------------------Optional Bootstrap JS--------------------------------->    
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
